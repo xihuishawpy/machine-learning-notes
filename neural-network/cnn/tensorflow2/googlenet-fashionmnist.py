@@ -42,7 +42,7 @@ def googlenet():
         tf.keras.layers.Conv2D(64, 7, strides=2, padding='same',
                                activation='relu'),
         tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
-    
+
     b2 = tf.keras.Sequential([
         tf.keras.layers.Conv2D(64, 1, activation='relu'),
         tf.keras.layers.Conv2D(192, 3, padding='same', activation='relu'),
@@ -52,7 +52,7 @@ def googlenet():
         InceptionBlock(64, (96, 128), (16, 32), 32),
         InceptionBlock(128, (128, 192), (32, 96), 64),
         tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
-    
+
     b4 = tf.keras.Sequential([
         InceptionBlock(192, (96, 208), (16, 48), 64),
         InceptionBlock(160, (112, 224), (24, 64), 64),
@@ -67,8 +67,7 @@ def googlenet():
         tf.keras.layers.Flatten()
     ])
 
-    net = tf.keras.Sequential([b1, b2, b3, b4, b5, tf.keras.layers.Dense(10)])
-    return net
+    return tf.keras.Sequential([b1, b2, b3, b4, b5, tf.keras.layers.Dense(10)])
 
 def main(args):
 
