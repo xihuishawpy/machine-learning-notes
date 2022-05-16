@@ -58,8 +58,7 @@ class AlexNet(nn.Module):
 
     def forward(self, img):
         feature = self.conv(img)
-        output = self.fc(feature.view(img.shape[0], -1))
-        return output
+        return self.fc(feature.view(img.shape[0], -1))
 
 def main(args):
     net = AlexNet()

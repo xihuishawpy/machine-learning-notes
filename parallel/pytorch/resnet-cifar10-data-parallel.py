@@ -135,11 +135,7 @@ def load_data_cifar10(batch_size, resize=None, root='~/Datasets/CIFAR10'):
     cifar_test = torchvision.datasets.CIFAR10(
         root=root, train=False, transform=transform_test)
 
-    if sys.platform.startswith('win'):
-        num_workers = 0
-    else:
-        num_workers = 4
-
+    num_workers = 0 if sys.platform.startswith('win') else 4
     train_iter = torch.utils.data.DataLoader(cifar_train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     test_iter = torch.utils.data.DataLoader(cifar_test, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
@@ -147,7 +143,7 @@ def load_data_cifar10(batch_size, resize=None, root='~/Datasets/CIFAR10'):
 
 def train(net, train_iter, test_iter, batch_size, optimizer, num_epochs):
     gpus = [0, 1]
-    torch.cuda.set_device('cuda:{}'.format(gpus[0]))
+    torch.cuda.set_device(f'cuda:{gpus[0]}')
 
     net.cuda()
 

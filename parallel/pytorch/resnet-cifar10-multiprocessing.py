@@ -167,11 +167,7 @@ def load_data_cifar10(batch_size, resize=None, root='~/Datasets/CIFAR10'):
     cifar_test = torchvision.datasets.CIFAR10(
         root=root, train=False, transform=transform_test)
 
-    if sys.platform.startswith('win'):
-        num_workers = 0
-    else:
-        num_workers = 4
-
+    num_workers = 0 if sys.platform.startswith('win') else 4
     train_iter = torch.utils.data.DataLoader(cifar_train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     test_iter = torch.utils.data.DataLoader(cifar_test, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
@@ -264,7 +260,7 @@ def validate(net, test_iter, loss, local_rank, args):
     net.eval()
 
     with torch.no_grad():
-        for i, (X, y) in enumerate(test_iter):
+        for X, y in test_iter:
             X = X.cuda(local_rank, non_blocking=True)
             y = y.cuda(local_rank, non_blocking=True)
 
@@ -275,9 +271,7 @@ def validate(net, test_iter, loss, local_rank, args):
             total += y.size(0)
             correct += (predicted == y).sum().item()
 
-    accuracy = correct / total
-
-    return accuracy
+    return correct / total
 
 def main(args):
 

@@ -67,10 +67,7 @@ def googlenet():
                    # AdaptiveMaxPool2d convert the matrix into 1 * 1 scalar
                    nn.AdaptiveMaxPool2d((1,1)),
                    nn.Flatten())
-    # final linear layer, for classification label number
-    # 1024 -> 10
-    net = nn.Sequential(b1, b2, b3, b4, b5, nn.Linear(1024, 10))
-    return net
+    return nn.Sequential(b1, b2, b3, b4, b5, nn.Linear(1024, 10))
 
 def main(args):
     net = googlenet()

@@ -54,11 +54,16 @@ def resnet18():
     b4 = nn.Sequential(*resnet_block(in_channels=128, num_channels=256, num_residuals=2))
     b5 = nn.Sequential(*resnet_block(256, 512, 2))
 
-    net = nn.Sequential(b1, b2, b3, b4, b5,
-                    nn.AdaptiveAvgPool2d((1,1)),
-                    nn.Flatten(), nn.Linear(512, 10))
-
-    return net
+    return nn.Sequential(
+        b1,
+        b2,
+        b3,
+        b4,
+        b5,
+        nn.AdaptiveAvgPool2d((1, 1)),
+        nn.Flatten(),
+        nn.Linear(512, 10),
+    )
 
 def load_data_cifar10(batch_size, resize=None, root='~/Datasets/CIFAR10'):
     transform_train = torchvision.transforms.Compose([
@@ -78,11 +83,7 @@ def load_data_cifar10(batch_size, resize=None, root='~/Datasets/CIFAR10'):
     cifar_test = torchvision.datasets.CIFAR10(
         root=root, train=False, transform=transform_test)
 
-    if sys.platform.startswith('win'):
-        num_workers = 0
-    else:
-        num_workers = 4
-
+    num_workers = 0 if sys.platform.startswith('win') else 4
     train_iter = torch.utils.data.DataLoader(cifar_train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     test_iter = torch.utils.data.DataLoader(cifar_test, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 

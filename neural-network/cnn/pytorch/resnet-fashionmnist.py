@@ -52,11 +52,16 @@ def resnet18():
     b4 = nn.Sequential(*resnet_block(in_channels=128, num_channels=256, num_residuals=2))
     b5 = nn.Sequential(*resnet_block(256, 512, 2))
 
-    net = nn.Sequential(b1, b2, b3, b4, b5,
-                    nn.AdaptiveAvgPool2d((1,1)),
-                    nn.Flatten(), nn.Linear(512, 10))
-
-    return net
+    return nn.Sequential(
+        b1,
+        b2,
+        b3,
+        b4,
+        b5,
+        nn.AdaptiveAvgPool2d((1, 1)),
+        nn.Flatten(),
+        nn.Linear(512, 10),
+    )
 
 def main(args):
     net = resnet18()

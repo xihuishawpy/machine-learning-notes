@@ -61,8 +61,7 @@ class LinearRegression:
         -------
         pred_ys: (num_of_samples, 1) 1-dimension array of y for num_of_samples samples
         """
-        pred_ys = X.dot(self.W)
-        return pred_ys
+        return X.dot(self.W)
 
 
     def loss_and_gradient(self, X, y, vectorized=True):
@@ -111,25 +110,23 @@ def linear_loss_grad_for_loop(W, X, y):
     
     # num_of_samples rows of training data
     num_of_samples = X.shape[0]
-    
+
     # num_of_samples columns of features
     num_of_features = X.shape[1]
-    
+
     loss = 0
-    
+
     # shape (num_of_samples, 1) same with W
     gradient = np.zeros_like(W) 
-    
+
     for i in range(num_of_samples):
         X_i = X[i, :] # i-th sample from training data
-        f = 0
-        for j in range(num_of_features):
-            f += X_i[j] * W[j, 0]
+        f = sum(X_i[j] * W[j, 0] for j in range(num_of_features))
         diff = f - y[i, 0]
         loss += np.power(diff, 2)
         for j in range(num_of_features):
             gradient[j, 0] += diff * X_i[j]
-            
+
     loss = 1.0 / 2 * loss
 
     return (loss, gradient)

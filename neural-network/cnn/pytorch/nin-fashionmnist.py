@@ -16,9 +16,7 @@ def nin():
     '''
     Returns the NiN network
     '''
-    # Fashion-MNIST 1 * 28 * 28, resize into the input into 1 * 224 * 224
-    # input shape: 1 * 224 * 224
-    net = nn.Sequential(
+    return nn.Sequential(
         # 1 * 224 * 224 -> 96 * 54 * 54
         nin_block(1, 96, kernel_size=11, strides=4, padding=0),
         # 96 * 54 * 54 -> 96 * 26 * 26
@@ -37,9 +35,8 @@ def nin():
         # 10 * 5 * 5 -> 10 * 1 * 1
         nn.AdaptiveAvgPool2d((1, 1)),
         # get the final classification result
-        nn.Flatten())
-
-    return net
+        nn.Flatten(),
+    )
 
 def main(args):
     net = nin()
